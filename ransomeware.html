@@ -139,27 +139,14 @@
     e.returnValue = "🚨 SYSTEM ALERT 🚨\nCie Gabisa Keluar udh dm aja @alvxt278";
     return "🚨 SYSTEM ALERT 🚨\nCie Gabisa Keluar udh dm aja @alvxt278";
   });
-
+        // Mencegah pengguna meninggalkan halaman
+        window.onbeforeunload = function() {
+            return "Apakah Anda yakin ingin meninggalkan halaman ini?";
+        };
   // prank lock
   let prank = setInterval(() => {
     alert("🚨 SYSTEM ALERT 🚨\nYou cannot exit until you contact me on ingstagram (@Alvxt278)");
   }, 1000);
 </script>
-</body>
-</html> 
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Oops! Your files have been encrypted!</h1>
-        <p>All your important files have been encrypted. To restore access to your files, you must provide a heartfelt video apology.</p>
-        <p>Instructions:</p>
-        <ol>
-            <li>Record a heartfelt video apologizing for not keeping your system secure.</li>
-            <li>Click the "Send Video on WhatsApp" button below to send your video.</li>
-        </ol>
-        <a href="https://wa.me/+6282258498606?text=I%20am%20sending%20my%20apology%20video%20as%20requested." class="button">Send Video on WhatsApp</a>
-        <div id="message"></div>
-    </div>
 </body>
 </html>
