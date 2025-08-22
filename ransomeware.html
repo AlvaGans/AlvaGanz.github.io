@@ -1,40 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ransomware</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #121212;
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .container {
-            text-align: center;
-            background-color: #1e1e1e;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px #000;
-            width: 80%;
-            max-width: 600px;
-        }
-        h1 {
-            color: #ff0000;
-        }
-        a.button {
-            display: inline-block;
-            background-color: #ff0000;
-            color: #ffffff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Cyber Warning</title>
+<style>
+  :root{
+    --bg:#0f0f12; --panel:#17171c; --primary:#ff3b3b; --accent:#ff9c00; --text:#e9e9ef;
+    --muted:#a7a7b3; --glow:0 0 30px rgba(255,59,59,.35);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif; color:var(--text);
+    background: radial-gradient(1200px 600px at 10% -10%, #2a0c0c 0, transparent 60%),
+                radial-gradient(900px 500px at 90% 110%, #121e35 0, transparent 60%),
+                var(--bg);
+    display:flex; align-items:center; justify-content:center; padding:24px;
+  }
+  .wrap{width:min(900px,96vw)}
+  .panel{
+    background:linear-gradient(180deg, #1a1a22 0%, #121216 100%);
+    border:1px solid #ffffff14; border-radius:16px; padding:24px; box-shadow:0 10px 30px rgba(0,0,0,.45)
+  }
+  .head{display:flex; align-items:center; gap:18px; margin-bottom:10px}
+  .lock{font-size:46px}
+  h1{margin:0; color:var(--primary); text-shadow:var(--glow)}
+  .sub{color:var(--muted); margin:6px 0 18px 0}
+  .grid{
+    display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    margin:18px 0 10px;
+  }
+  .card{background:var(--panel); border:1px solid #ffffff14; border-radius:12px; padding:16px}
+  .label{font:700 12px/1 monospace; color:#ffc7c7; letter-spacing:.1em}
+  .value{margin-top:6px; font:600 14px/1.4 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace}
+  .cta{display:flex; gap:12px; flex-wrap:wrap; margin-top:18px}
+  .muted{color:#9aa0ad; font-size:12px}
+  .glitch{position:relative; display:inline-block; font-weight:800; letter-spacing:.02em;}
+  .glitch::before, .glitch::after{
+    content:attr(data-text); position:absolute; left:0; top:0; width:100%; overflow:hidden;
+  }
+  .glitch::before{color:#ff4d4d; transform:translate(1px,0); mix-blend-mode:screen; clip-path:inset(0 0 55% 0)}
+  .glitch::after{color:#4dd8ff; transform:translate(-1px,0); mix-blend-mode:screen; clip-path:inset(45% 0 0 0)}
+  .divider{height:1px; background:#ffffff14; margin:16px 0}
+  .watermark{
+    position:fixed; inset:auto 0 8px 0; text-align:center;
+    font:700 12px/1.2 monospace; letter-spacing:.2em; color:#ffffff66;
+    text-transform:uppercase; pointer-events:none;
+  }
+  .btn{
+    background:var(--primary); color:#fff; border:none; padding:12px 20px;
+    border-radius:8px; cursor:pointer; font-weight:700;
+    box-shadow:var(--glow);
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="panel" id="panel">
+      <div class="head">
+        <div class="lock">🔒</div>
+        <div>
+          <h1 class="glitch" data-text="SYSTEM ALERT">SYSTEM ALERT</h1>
+          <div class="sub"> SYSTEM ALERT <strong>Alva1337 Project</strong>.</div>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <div class="label">STATUS</div>
+          <div class="value">Locked</div>
+        </div>
+
+        <div class="card">
+          <div class="label">Date</div>
+          <div class="value" id="dateTime">Loading...</div>
+        </div>
+
+        <div class="card">
+          <div class="label">HOST</div>
+          <div class="value" id="deviceName">Loading...</div>
+        </div>
+
+        <div class="card">
+          <div class="label">IP</div>
+          <div class="value" id="userIP">Loading...</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <p id="blurb">
+        <strong style="color:#ff9c00">Heads-up:</strong> Contact Me if you need help in whatsapp ( +62 822-5849-8606 ) or instagram ( @Alvxt278 )
+      </p>
+    <div class="watermark"> Alva1337 • Ransomeware</div>
+  </div>
+
+<script>
+  // realtime date-time
+  function updateDateTime() {
+    const now = new Date();
+    const options = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    };
+    document.getElementById('dateTime').textContent = now.toLocaleDateString('id-ID', options);
+  }
+  updateDateTime();
+  setInterval(updateDateTime, 1000);
+
+  // device name
+  function getDeviceName() {
+    let ua = navigator.userAgent;
+    let match = ua.match(/\((.*?)\)/);
+    if (match && match[1]) {
+      return match[1];
+    }
+    return ua;
+  }
+  document.getElementById("deviceName").textContent = getDeviceName();
+
+  // public IP
+  fetch('https://api.ipify.org?format=json')
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById('userIP').textContent = data.ip;
+    })
+    .catch(() => {
+      document.getElementById('userIP').textContent = "Gagal ambil IP";
+    });
+  // cegah close/reload/back
+  window.addEventListener("beforeunload", function (e) {
+    e.preventDefault();
+    e.returnValue = "🚨 SYSTEM ALERT 🚨\nCie Gabisa Keluar udh dm aja @alvxt278";
+    return "🚨 SYSTEM ALERT 🚨\nCie Gabisa Keluar udh dm aja @alvxt278";
+  });
+
+  // prank lock
+  let prank = setInterval(() => {
+    alert("🚨 SYSTEM ALERT 🚨\nYou cannot exit until you contact me on ingstagram (@Alvxt278)");
+  }, 1000);
+</script>
+</body>
+</html>            text-decoration: none;
             cursor: pointer;
         }
         a.button:hover {
