@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hadiah Spesial 😁</title>
+  <style>
+    html,body {margin:0;height:100%;font-family:system-ui,-apple-system,Roboto,Arial}
+    .center {display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column;gap:12px}
+    button {padding:14px 18px;border:none;border-radius:12px;font-weight:700;font-size:16px}
+    .primary {box-shadow:0 8px 24px rgba(0,0,0,.15)}
+    .overlay {
+      position:fixed;inset:0;background:rgba(0,0,0,.9);color:#fff;
+      display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;text-align:center;padding:24px
+    }
+    .spinner {
+      width:42px;height:42px;border:4px solid #888;border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite
+    }
+    @keyframes spin {to{transform:rotate(360deg)}}
+    .hint {opacity:.7;font-size:13px}
+  </style>
+</head>
+<body>
+  <div class="center">
+    <h1>🎁 Klik buat ambil hadiah</h1>
+    <button class="primary" id="go">Ambil Sekarang</button>
+    <div class="hint">Android: kalau panik, tekan tombol Home/Overview untuk keluar 😄</div>
+  </div>
+
+  <div class="overlay" id="lock">
+    <div class="spinner"></div>
+    <h2>Memproses…</h2>
+    <p>Jangan keluar dari halaman ini.</p>
+    <p id="timer">Tersisa 10 detik…</p>
+    <button id="exit" style="display:none">Keluar</button>
+  </div>
+
+<script>
+const btn = document.getElementById('go');
+const lock = document.getElementById('lock');
+const timer = document.getElementById('timer');
+const exitBtn = document.getElementById('exit');
+
+function vibrate(pattern){ if (navigator.vibrate) navigator.vibrate(pattern); }
+
+btn.addEventListener('click', async () => {
+  // minta fullscreen (Android Chrome support)
+  try { await document.documentElement.requestFullscreen(); } catch(e){}
+  // mainkan getar dikit biar dramatis
+  vibrate([60, 40, 60]);
+  // tampilkan overlay “terkunci”
+  lock.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+
+  // hitung mundur 10 detik lalu munculkan tombol keluar
+  let s = 10;
+  const t = setInterval(()=> {
+    s--;
+    timer.textContent = `Tersisa ${s} detik…`;
+    if (s<=0){
+      clearInterval(t);
+      timer.textContent = 'Selesai!';
+      exitBtn.style.display = 'inline-block';
+    }
+  }, 1000);
+});
+
+// tombol keluar (pasti ada jalan keluar)
+exitBtn.addEventListener('click', async () => {
+  vibrate(50);
+  document.body.style.overflow = '';
+  lock.style.display = 'none';
+  try { if (document.fullscreenElement) await document.exitFullscreen(); } catch(e){}
+  alert('PRANK SELESAI 😆');
+});
+</script>
+</body>
+</html>
